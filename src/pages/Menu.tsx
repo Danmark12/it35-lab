@@ -5,7 +5,12 @@ import {
       IonMenuButton, 
       IonPage, 
       IonTitle, 
-      IonToolbar 
+      IonToolbar,
+      IonIcon,
+      IonItem,
+      IonMenu,
+      IonMenuToggle,
+      IonSplitPane
   } from '@ionic/react';
   
   const Menu: React.FC = () => {
@@ -19,7 +24,14 @@ import {
             <IonTitle>Menu</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen>
+        <IonContent>
+          {path.map
+
+          }
+
+
+
+
         </IonContent>
       </IonPage>
     );
