@@ -20,6 +20,8 @@ import {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
+
+          makoy
         </IonContent>
       </IonPage>
     );
