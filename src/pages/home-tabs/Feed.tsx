@@ -23,32 +23,48 @@ import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle }
         </IonHeader>
         <IonContent fullscreen>
 
-        <IonCard>
-          
+        <IonCard>  
       <IonCardHeader>
         <IonCardTitle>Card Title</IonCardTitle>
         <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent></IonCardContent>
+      </IonCard>
+
       <IonCard>
       <IonCardHeader>
         <IonCardTitle>Card Title</IonCardTitle>
         <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
       </IonCardHeader>
-
       <IonCardContent></IonCardContent>
     </IonCard>
+
+
     <IonCard>
       <IonCardHeader>
         <IonCardTitle>Card Title</IonCardTitle>
         <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
       </IonCardHeader>
-
       <IonCardContent></IonCardContent>
     </IonCard>
 
-
+    <IonCard>
+      <IonCardHeader>
+        <IonCardTitle>Card Title</IonCardTitle>
+        <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      </IonCardHeader>
+      <IonCardContent></IonCardContent>
     </IonCard>
+    
+    <IonCard>
+      <IonCardHeader>
+        <IonCardTitle>Card Title</IonCardTitle>
+        <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      </IonCardHeader>
+      <IonCardContent></IonCardContent>
+    </IonCard>
+  
+
         <div
           style={{
             display: 'flex',
