@@ -5,11 +5,13 @@ import {
       IonMenuButton, 
       IonPage, 
       IonTitle, 
-      IonToolbar 
+      IonToolbar,
+      IonThumbnail,
   } from '@ionic/react';
   import React from 'react';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
-  
+import './main.css';
+
   const Feed: React.FC = () => {
     return (
       <IonPage>
@@ -24,6 +26,9 @@ import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle }
         <IonContent fullscreen>
 
         <IonCard>  
+        <IonThumbnail slot="start">
+              <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+            </IonThumbnail>
       <IonCardHeader>
         <IonCardTitle>Card Title</IonCardTitle>
         <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
@@ -55,7 +60,7 @@ import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle }
       </IonCardHeader>
       <IonCardContent></IonCardContent>
     </IonCard>
-    
+
     <IonCard>
       <IonCardHeader>
         <IonCardTitle>Card Title</IonCardTitle>
