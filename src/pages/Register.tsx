@@ -1,33 +1,80 @@
 import { 
-  IonBackButton,
-  IonButtons,
+    IonBackButton,
+    IonButtons,
     IonContent, 
     IonHeader, 
-    IonMenuButton, 
     IonPage, 
     IonTitle, 
     IonToolbar,
     IonCard, 
     IonCardContent,
-     IonCardHeader, 
-    IonCardSubtitle,
-     IonCardTitle,
-} from '@ionic/react';
-import React from 'react';
+    IonCardHeader, 
+    IonCardTitle,
+    IonInput,
+    IonInputPasswordToggle,
+    IonButton,
+    IonCardSubtitle
+  } from '@ionic/react';
+  import React, { useState } from 'react';
+  
+  const Register: React.FC = () => {
+    const [password, setPassword] = useState('');
+  
+    return (
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonBackButton />
+            </IonButtons>
+            <IonTitle>Register</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        
+        <IonContent className="ion-padding">
+          <IonCard>
+            <IonCardHeader>
+              <IonCardTitle>Sign Up</IonCardTitle>
+              <IonCardSubtitle>Enter your details to create an account</IonCardSubtitle>
+            </IonCardHeader>
+  
+            <IonCardContent>
 
-const Register: React.FC = () => {
-  return (
 
-     
-      <IonCard>
-      <IonCardHeader>
-        <IonCardTitle>Card Title</IonCardTitle>
-        <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
-      </IonCardHeader>
+              <IonInput
+                type="password"
+                label="Password"
+                labelPlacement="floating"
+                value={password}
+                onIonChange={(e) => setPassword(e.detail.value!)}
+                fill="outline"
+                placeholder="Enter your password"
+                style={{ marginBottom: '15px' }}
+              >
+                <IonInputPasswordToggle slot="end" />
+              </IonInput>
+  
 
-      <IonCardContent>Here's a small text description for the card content. Nothing more, nothing less.</IonCardContent>
-    </IonCard>
-  );
-};
+              <IonButton expand="full" shape="round" style={{ marginTop: '20px' }}>
+                Register
+              </IonButton>
+  
 
-export default Register;
+              <IonButton
+                routerLink="/it35-lab/login" 
+                expand="full"
+                fill="clear"
+                shape="round"
+                style={{ marginTop: '10px' }}
+              >
+                Already have an account? Log in
+              </IonButton>
+            </IonCardContent>
+          </IonCard>
+        </IonContent>
+      </IonPage>
+    );
+  };
+  
+  export default Register;
+  
