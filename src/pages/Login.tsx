@@ -24,6 +24,10 @@ const Login: React.FC = () => {
     navigation.push('/it35-lab/app', 'forward', 'replace');
   };
 
+  const goToSignUp = () => {
+    navigation.push('/signup', 'forward');
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -58,7 +62,9 @@ const Login: React.FC = () => {
 
               <div className="footer">
                 <span> | </span>
-                <a href="#">You don't have account? Sign up</a>
+                <IonButton fill="clear" size="small" onClick={goToSignUp}>
+                  You don't have an account? Sign up here!
+                </IonButton>
               </div>
             </IonCardContent>
           </IonCard>
