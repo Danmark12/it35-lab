@@ -83,7 +83,7 @@ const Login: React.FC = () => {
                 Login
               </IonButton>
 
-              <IonButton routerLink="/it35-lab/register" expand="full" fill="clear" shape='round' style={{ marginTop: '10px' }}>
+              <IonButton routerLink="/it35-lab/Register" expand="full" fill="clear" shape='round' style={{ marginTop: '10px' }}>
                 Don't have an account? Register here
               </IonButton>
             </IonCardContent>
