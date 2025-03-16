@@ -17,7 +17,7 @@ import React from 'react';
 
 const Register: React.FC = () => {
   return (
-    <IonPage>
+
      
       <IonCard>
       <IonCardHeader>
@@ -27,8 +27,6 @@ const Register: React.FC = () => {
 
       <IonCardContent>Here's a small text description for the card content. Nothing more, nothing less.</IonCardContent>
     </IonCard>
-
-    </IonPage>
   );
 };
 
