@@ -10,7 +10,8 @@ import {
   IonCardContent,
   IonInput,
   IonInputPasswordToggle,
-  IonButton
+  IonButton,
+  IonAlert
 } from '@ionic/react';
 import React, { useState } from 'react';
 
@@ -19,10 +20,19 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleRegister = () => {
+    if (!username || !password || !confirmPassword) {
+      setAlertMessage("All fields are required!");
+      setShowAlert(true);
+      return;
+    }
+    
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setAlertMessage("Passwords do not match!");
+      setShowAlert(true);
       return;
     }
 
@@ -91,6 +101,14 @@ const Register: React.FC = () => {
             </IonCardContent>
           </IonCard>
         </div>
+        
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header="Notification"
+          message={alertMessage}
+          buttons={['OK']}
+        />
       </IonContent>
     </IonPage>
   );
