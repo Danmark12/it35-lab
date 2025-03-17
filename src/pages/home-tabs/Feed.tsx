@@ -28,7 +28,6 @@ import {
             height: '100%',
           }}
         >
-          Pidol pisot
         </div>
         </IonContent>
       </IonPage>
