@@ -101,8 +101,9 @@ const Login: React.FC = () => {
                 <img 
                   src="https://img.icons8.com/color/48/google-logo.png" 
                   alt="Google"
-                  style={{ width: '30px', height: '30px' }}
+                  style={{ width: '20px', height: '20px' }}
                 />
+                oogle
               </IonButton>
 
               <IonButton routerLink="/it35-lab/Register" expand="full" fill="clear" shape='round' style={{ marginTop: '10px' }}>
