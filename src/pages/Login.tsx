@@ -31,6 +31,7 @@ const Login: React.FC = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
+  // Dummy login function (Replace with real API)
   const doLogin = () => {
     if (!username || !password) {
       setAlertMessage('Please fill in all fields.');
@@ -38,12 +39,23 @@ const Login: React.FC = () => {
       return;
     }
 
-    setShowToast(true);
-    setTimeout(() => {
-      navigation.push('/it35-lab/app', 'forward', 'replace');
-    }, 300);
+    if (username === 'admin' && password === 'admin123') {
+      setShowToast(true);
+      setTimeout(() => {
+        navigation.push('/it35-lab/app', 'forward', 'replace');
+      }, 1500);
+    } else {
+      setAlertMessage("Invalid username or password.");
+      setShowAlert(true);
+    }
   };
-  
+
+  // Placeholder function for Google Sign-In
+  const signInWithGoogle = () => {
+    alert("Google login is not yet implemented.");
+    // Here you can integrate Firebase or another OAuth provider
+  };
+
   return (
     <IonPage>
       <IonContent className="ion-padding" fullscreen>
@@ -83,8 +95,18 @@ const Login: React.FC = () => {
                 Login
               </IonButton>
 
+              <p style={{ margin: '10px 0' }}> or continue with</p>
+
+              <IonButton onClick={signInWithGoogle} fill="clear" style={{ padding: '0', minWidth: '50px' }}>
+                <img 
+                  src="https://img.icons8.com/color/48/google-logo.png" 
+                  alt="Google"
+                  style={{ width: '30px', height: '30px' }}
+                />
+              </IonButton>
+
               <IonButton routerLink="/it35-lab/Register" expand="full" fill="clear" shape='round' style={{ marginTop: '10px' }}>
-                Don't have an account? Register here
+                Don't have an account? Register here!
               </IonButton>
             </IonCardContent>
           </IonCard>
