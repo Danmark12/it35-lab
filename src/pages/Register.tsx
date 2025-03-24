@@ -14,6 +14,9 @@ import {
   IonAlert
 } from '@ionic/react';
 import React, { useState } from 'react';
+import { supabase } from '../utils/supabaseClient';
+import bcrypt from 'bcryptjs';
+
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
