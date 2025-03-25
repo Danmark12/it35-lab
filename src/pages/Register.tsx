@@ -17,9 +17,9 @@ import React, { useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import bcrypt from 'bcryptjs';
 
-
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +27,7 @@ const Register: React.FC = () => {
   const [showAlert, setShowAlert] = useState(false);
 
   const handleRegister = () => {
-    if (!username || !password || !confirmPassword) {
+    if (!username || !email || !password || !confirmPassword) {
       setAlertMessage("All fields are required!");
       setShowAlert(true);
       return;
@@ -39,7 +39,7 @@ const Register: React.FC = () => {
       return;
     }
 
-    console.log("Registering user", { username, password });
+    console.log("Registering user", { username, email, password });
   };
 
   return (
@@ -63,6 +63,17 @@ const Register: React.FC = () => {
                 placeholder="Enter Username"
                 value={username}
                 onIonChange={e => setUsername(e.detail.value!)}
+                style={{ marginBottom: '15px' }}
+              />
+              
+              <IonInput
+                label="Email" 
+                labelPlacement="floating" 
+                fill="outline"
+                type="email"
+                placeholder="Enter Email"
+                value={email}
+                onIonChange={e => setEmail(e.detail.value!)}
                 style={{ marginBottom: '15px' }}
               />
 

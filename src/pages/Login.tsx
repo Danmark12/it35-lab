@@ -25,35 +25,42 @@ const AlertBox: React.FC<{ message: string; isOpen: boolean; onClose: () => void
 
 const Login: React.FC = () => {
   const navigation = useIonRouter();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  // Dummy login function (Replace with real API)
   const doLogin = () => {
-    if (!username || !password) {
+    if (!email || !password) {
       setAlertMessage('Please fill in all fields.');
       setShowAlert(true);
       return;
     }
 
-    if (username === 'admin' && password === 'admin123') {
-      setShowToast(true);
-      setTimeout(() => {
-        navigation.push('/it35-lab/app', 'forward', 'replace');
-      }, 1500);
-    } else {
-      setAlertMessage("Invalid username or password.");
-      setShowAlert(true);
-    }
-  };
+    // Get registered users from localStorage
+    const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
 
-  // Placeholder function for Google Sign-In
-  const signInWithGoogle = () => {
-    alert("Google login is not yet implemented.");
-    // Here you can integrate Firebase or another OAuth provider
+    // Find user by email
+    const user = users.find((user: { email: string; password: string }) => user.email === email);
+
+    if (!user) {
+      setAlertMessage("Account not found. Please register first.");
+      setShowAlert(true);
+      return;
+    }
+
+    if (user.password !== password) {
+      setAlertMessage("Incorrect password. Please try again.");
+      setShowAlert(true);
+      return;
+    }
+
+    // Successful login
+    setShowToast(true);
+    setTimeout(() => {
+      navigation.push('/it35-lab/app', 'forward', 'replace');
+    }, 1500);
   };
 
   return (
@@ -70,13 +77,13 @@ const Login: React.FC = () => {
               <h1>DanDev</h1>
 
               <IonInput
-                label="Username" 
+                label="Email" 
                 labelPlacement="floating" 
                 fill="outline"
-                type="text"
-                placeholder="Enter Username"
-                value={username}
-                onIonChange={e => setUsername(e.detail.value!)}
+                type="email"
+                placeholder="Enter Email"
+                value={email}
+                onIonChange={e => setEmail(e.detail.value!)}
                 style={{ marginBottom: '15px' }}
               />
 
@@ -93,17 +100,6 @@ const Login: React.FC = () => {
 
               <IonButton onClick={doLogin} expand="full" shape='round'>
                 Login
-              </IonButton>
-
-              <p style={{ margin: '10px 0' }}> or continue with</p>
-
-              <IonButton onClick={signInWithGoogle} fill="clear" style={{ padding: '0', minWidth: '50px' }}>
-                <img 
-                  src="https://img.icons8.com/color/48/google-logo.png" 
-                  alt="Google"
-                  style={{ width: '20px', height: '20px' }}
-                />
-                oogle
               </IonButton>
 
               <IonButton routerLink="/it35-lab/Register" expand="full" fill="clear" shape='round' style={{ marginTop: '10px' }}>
