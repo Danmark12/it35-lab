@@ -1,27 +1,16 @@
-import { 
+import {
   IonAlert,
   IonButton,
   IonCard,
   IonCardContent,
-  IonContent, 
-  IonInput,  
-  IonPage,  
-  IonToast,  
-  useIonRouter
+  IonContent,
+  IonInput,
+  IonPage,
+  IonToast,
+  useIonRouter,
 } from '@ionic/react';
 import { useState } from 'react';
-
-const AlertBox: React.FC<{ message: string; isOpen: boolean; onClose: () => void }> = ({ message, isOpen, onClose }) => {
-  return (
-    <IonAlert
-      isOpen={isOpen}
-      onDidDismiss={onClose}
-      header="Notification"
-      message={message}
-      buttons={['OK']}
-    />
-  );
-};
+import { supabase } from '../utils/supabaseClient';
 
 const Login: React.FC = () => {
   const navigation = useIonRouter();
@@ -31,85 +20,104 @@ const Login: React.FC = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  const doLogin = () => {
+  const doLogin = async () => {
     if (!email || !password) {
       setAlertMessage('Please fill in all fields.');
       setShowAlert(true);
       return;
     }
 
-    // Get registered users from localStorage
-    const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    // Find user by email
-    const user = users.find((user: { email: string; password: string }) => user.email === email);
+      if (error) {
+        setAlertMessage(error.message || 'Login failed. Please try again.');
+        setShowAlert(true);
+        return;
+      }
 
-    if (!user) {
-      setAlertMessage("Account not found. Please register first.");
+      // Successful login
+      setShowToast(true);
+      setTimeout(() => {
+        navigation.push('/it35-lab/app', 'forward', 'replace');
+      }, 1500);
+    } catch (err) {
+      setAlertMessage('Something went wrong. Please try again.');
       setShowAlert(true);
-      return;
     }
-
-    if (user.password !== password) {
-      setAlertMessage("Incorrect password. Please try again.");
-      setShowAlert(true);
-      return;
-    }
-
-    // Successful login
-    setShowToast(true);
-    setTimeout(() => {
-      navigation.push('/it35-lab/app', 'forward', 'replace');
-    }, 1500);
   };
 
   return (
     <IonPage>
       <IonContent className="ion-padding" fullscreen>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh'
-        }}>
-          <IonCard style={{ width: '90%', maxWidth: '400px', textAlign: 'center', padding: '20px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+          }}
+        >
+          <IonCard
+            style={{
+              width: '90%',
+              maxWidth: '400px',
+              textAlign: 'center',
+              padding: '20px',
+            }}
+          >
             <IonCardContent>
               <h1>DanDev</h1>
 
               <IonInput
-                label="Email" 
-                labelPlacement="floating" 
+                label="Email"
+                labelPlacement="floating"
                 fill="outline"
                 type="email"
                 placeholder="Enter Email"
                 value={email}
-                onIonChange={e => setEmail(e.detail.value!)}
+                onIonChange={(e) => setEmail(e.detail.value!)}
                 style={{ marginBottom: '15px' }}
               />
 
               <IonInput
                 label="Password"
-                labelPlacement="floating" 
+                labelPlacement="floating"
                 fill="outline"
                 type="password"
                 placeholder="Enter Password"
                 value={password}
-                onIonChange={e => setPassword(e.detail.value!)}
+                onIonChange={(e) => setPassword(e.detail.value!)}
                 style={{ marginTop: '10px', marginBottom: '15px' }}
               />
 
-              <IonButton onClick={doLogin} expand="full" shape='round'>
+              <IonButton onClick={doLogin} expand="full" shape="round">
                 Login
               </IonButton>
 
-              <IonButton routerLink="/it35-lab/Register" expand="full" fill="clear" shape='round' style={{ marginTop: '10px' }}>
+              <IonButton
+                routerLink="/it35-lab/register"
+                expand="full"
+                fill="clear"
+                shape="round"
+                style={{ marginTop: '10px' }}
+              >
                 Don't have an account? Register here!
               </IonButton>
             </IonCardContent>
           </IonCard>
         </div>
 
-        <AlertBox message={alertMessage} isOpen={showAlert} onClose={() => setShowAlert(false)} />
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header="Notification"
+          message={alertMessage}
+          buttons={['OK']}
+        />
 
         <IonToast
           isOpen={showToast}
