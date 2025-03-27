@@ -41,31 +41,18 @@ const Register: React.FC = () => {
     }
 
     try {
-      const { data: existingUser } = await supabase
-        .from('users')
-        .select('id')
-        .eq('email', email)
-        .single();
-
-      if (existingUser) {
-        setAlertMessage('Email already registered!');
-        setShowAlert(true);
-        return;
-      }
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-
-      const { error } = await supabase.from('users').insert([
-        {
-          username,
-          email,
-          password: hashedPassword,
-          created_at: new Date().toISOString(),
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username: username,
+          },
         },
-      ]);
+      });
 
       if (error) {
-        setAlertMessage('Registration failed. Please try again.');
+        setAlertMessage(error.message);
         setShowAlert(true);
         return;
       }
@@ -184,12 +171,12 @@ const Register: React.FC = () => {
           ]}
         />
 
-{/*       Success Modal */}
-        <IonAlert
+         {/* Success Modal */}
+         <IonAlert
           isOpen={showSuccessModal}
           onDidDismiss={() => setShowSuccessModal(false)}
           header="Registration Successful"
-          message="Your account has been created successfully!"
+          message="Please check your email to verify your account!"
           buttons={[
             {
               text: 'OK',
