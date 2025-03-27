@@ -22,7 +22,6 @@ const Register: React.FC = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleRegister = async () => {
-    // Validate inputs
     if (!username || !email || !password || !confirmPassword) {
       setAlertMessage('All fields are required!');
       setShowAlert(true);
@@ -35,27 +34,28 @@ const Register: React.FC = () => {
       return;
     }
 
-    // Validate email domain
     if (!email.endsWith('@gmail.com')) {
       setAlertMessage('Only @gmail.com emails are allowed to register.');
       setShowAlert(true);
       return;
     }
 
-    // Open verification modal
-    setShowVerificationModal(true);
-  };
-
-  const doRegister = async () => {
-    setShowVerificationModal(false);
-
     try {
-      // Hash the password before saving it
+      const { data: existingUser } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', email)
+        .single();
+
+      if (existingUser) {
+        setAlertMessage('Email already registered!');
+        setShowAlert(true);
+        return;
+      }
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      // Insert the user into the 'users' table
-      const { data, error } = await supabase.from('users').insert([
+      const { error } = await supabase.from('users').insert([
         {
           username,
           email,
@@ -72,7 +72,7 @@ const Register: React.FC = () => {
 
       setShowSuccessModal(true);
     } catch (err) {
-      setAlertMessage('An error occurred during registration.');
+      setAlertMessage('Error occurred during registration.');
       setShowAlert(true);
     }
   };
@@ -179,12 +179,12 @@ const Register: React.FC = () => {
             },
             {
               text: 'Confirm',
-              handler: doRegister,
+              handler: handleRegister,
             },
           ]}
         />
 
-        {/* Success Modal */}
+{/*       Success Modal */}
         <IonAlert
           isOpen={showSuccessModal}
           onDidDismiss={() => setShowSuccessModal(false)}
@@ -197,6 +197,7 @@ const Register: React.FC = () => {
             },
           ]}
         />
+
 
         {/* Alert Box */}
         <IonAlert
