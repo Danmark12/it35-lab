@@ -11,14 +11,51 @@ import {
 } from '@ionic/react';
 import { useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
+import emailjs from 'emailjs-com';
 
 const Login: React.FC = () => {
   const navigation = useIonRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [otp, setOtp] = useState('');
+  const [generatedOtp, setGeneratedOtp] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [showOtpInput, setShowOtpInput] = useState(false);
+
+  const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+  const sendOtpEmail = async (userEmail: string, otp: string) => {
+    try {
+      await emailjs.send(
+        '1001D', 
+        'template_8t8qppi', 
+        { 
+          user_email: userEmail, 
+          otp: otp    
+        },
+        'q8dH6ZjVWODvkwtjU'        
+      );
+      setAlertMessage('OTP sent to your email. Please check your inbox.');
+      setShowAlert(true);
+    } catch (error) {
+      setAlertMessage('Failed to send OTP. Please try again.');
+      setShowAlert(true);
+    }
+  };
+
+  const verifyOtp = () => {
+    if (otp === generatedOtp) {
+      setShowToast(true);
+      setTimeout(() => {
+        navigation.push('/it35-lab/app', 'forward', 'replace');
+      }, 1500);
+    } else {
+      setAlertMessage('Invalid OTP. Please try again.');
+      setShowAlert(true);
+    }
+  };
 
   const doLogin = async () => {
     if (!email || !password) {
@@ -39,11 +76,11 @@ const Login: React.FC = () => {
         return;
       }
 
-      // Successful login
-      setShowToast(true);
-      setTimeout(() => {
-        navigation.push('/it35-lab/app', 'forward', 'replace');
-      }, 1500);
+      
+      const otp = generateOTP();
+      setGeneratedOtp(otp); 
+      sendOtpEmail(email, otp);
+      setShowOtpInput(true);
     } catch (err) {
       setAlertMessage('Something went wrong. Please try again.');
       setShowAlert(true);
@@ -97,6 +134,24 @@ const Login: React.FC = () => {
               <IonButton onClick={doLogin} expand="full" shape="round">
                 Login
               </IonButton>
+
+              {showOtpInput && (
+                <div>
+                  <IonInput
+                    label="Enter OTP"
+                    labelPlacement="floating"
+                    fill="outline"
+                    type="text"
+                    placeholder="Enter OTP"
+                    value={otp}
+                    onIonChange={(e) => setOtp(e.detail.value!)}
+                    style={{ marginTop: '15px', marginBottom: '15px' }}
+                  />
+                  <IonButton onClick={verifyOtp} expand="full" shape="round">
+                    Verify OTP
+                  </IonButton>
+                </div>
+              )}
 
               <IonButton
                 routerLink="/it35-lab/register"
