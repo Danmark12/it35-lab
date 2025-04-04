@@ -18,7 +18,6 @@ const Register: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleRegister = async () => {
@@ -41,25 +40,41 @@ const Register: React.FC = () => {
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            username: username,
-          },
+      // Check if email already exists
+      const { data: existingUser } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', email)
+        .single();
+
+      if (existingUser) {
+        setAlertMessage('Email already registered!');
+        setShowAlert(true);
+        return;
+      }
+
+      // Hash the password before storing
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      // Insert user into Supabase database
+      const { error } = await supabase.from('users').insert([
+        {
+          username,
+          email,
+          password: hashedPassword,
         },
-      });
+      ]);
 
       if (error) {
-        setAlertMessage(error.message);
+        setAlertMessage('Error saving user data.');
         setShowAlert(true);
         return;
       }
 
       setShowSuccessModal(true);
     } catch (err) {
-      setAlertMessage('Error occurred during registration.');
+      setAlertMessage('An error occurred during registration.');
       setShowAlert(true);
     }
   };
@@ -151,42 +166,15 @@ const Register: React.FC = () => {
           </IonCard>
         </div>
 
-        {/* Verification Modal */}
-        <IonAlert
-          isOpen={showVerificationModal}
-          onDidDismiss={() => setShowVerificationModal(false)}
-          header="Confirm Registration"
-          message={`Are you sure you want to register with the following details? 
-                    \n\nUsername: ${username}\nEmail: ${email}`}
-          buttons={[
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              handler: () => setShowVerificationModal(false),
-            },
-            {
-              text: 'Confirm',
-              handler: handleRegister,
-            },
-          ]}
-        />
 
-         {/* Success Modal */}
-         <IonAlert
+        <IonAlert
           isOpen={showSuccessModal}
           onDidDismiss={() => setShowSuccessModal(false)}
           header="Registration Successful"
-          message="Please check your email to verify your account!"
-          buttons={[
-            {
-              text: 'OK',
-              handler: () => setShowSuccessModal(false),
-            },
-          ]}
+          message="Your account has been registered successfully!"
+          buttons={['OK']}
         />
 
-
-        {/* Alert Box */}
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
@@ -199,4 +187,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default Register; 
