@@ -10,6 +10,7 @@ import {
   IonToast,  
   useIonRouter
 } from '@ionic/react';
+import { logoIonic } from 'ionicons/icons';
 import { useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
 
@@ -69,10 +70,10 @@ const Login: React.FC = () => {
               overflow: 'hidden' 
             }}
           >
-            <img 
-              src="/assets/dandev-logo.png" 
-              alt="DanDev Logo" 
-              style={{ width: '100%', height: '100%' }} 
+            <IonIcon 
+              icon={logoIonic}
+              color='primary'
+              style={{ fontSize: '120px', color: '#6c757d' }} 
             />
           </IonAvatar>
           <h1 style={{
